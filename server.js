@@ -1,4 +1,10 @@
 const express = require('express');
 const server = express();
 
-server.listen(3000);
+server.get('/', (req, res, next) => {
+  res.json({
+    success: true,
+  });
+});
+
+server.listen(5000);
