@@ -16,5 +16,8 @@
 	"bugs": {
 		"url": "https://github.com/Alcrro/AlcrroBackEnd/issues"
 	},
-	"homepage": "https://github.com/Alcrro/AlcrroBackEnd#readme"
+	"homepage": "https://github.com/Alcrro/AlcrroBackEnd#readme",
+	"dependencies": {
+		"dotenv": "^16.0.3"
+	}
 }
