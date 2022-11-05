@@ -12,6 +12,7 @@ connectDB();
 //Load Routes files
 const index = require('./routes/index/index');
 const user = require('./routes/user/User');
+const group = require('./routes/group/group');
 
 const server = express();
 
@@ -23,5 +24,6 @@ const PORT = process.env.DB_SERVER_PORT;
 server.use(logger);
 server.use('/', index);
 server.use('/api/user', user);
+server.use('/api/group', group);
 
 server.listen(PORT, console.log(`Server running in ${PORT}`));
