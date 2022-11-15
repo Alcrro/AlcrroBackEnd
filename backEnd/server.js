@@ -23,12 +23,19 @@ server.use(cors());
 
 const PORT = process.env.DB_SERVER_PORT;
 
+server.use('/', async (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,DELETE');
+  res.setHeader('Access-Control-Allow-Methods', 'Content-type');
+  await next();
+});
+
 //Mount routers
-server.use(errorHandler);
 server.use(logger);
 server.use('/api/auth', auth);
 server.use('/', index);
 server.use('/api/user', user);
 server.use('/api/group', group);
+server.use(errorHandler);
 
 server.listen(PORT, console.log(`Server running in ${PORT}`));

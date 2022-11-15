@@ -16,8 +16,18 @@ const viewsPath = path.join(__dirname, './public/views');
 app.set('views', viewsPath);
 
 app.get('/', (req, res, next) => {
-  res.render('views/index', {
+  res.render('index/index', {
     pageTitle: 'ALCRRO.RO',
+  });
+});
+app.get('/register', (req, res, next) => {
+  res.render('auth/regform', {
+    pageTitle: 'ALCRRO.RO - Register',
+  });
+});
+app.get('/login', (req, res, next) => {
+  res.render('auth/authform', {
+    pageTitle: 'ALCRRO.RO - Login',
   });
 });
 

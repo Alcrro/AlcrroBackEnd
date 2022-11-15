@@ -1,0 +1,30 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	margin: 0;
+	padding: 0;
+}
+ li {
+	display: inline;
+	padding: .1rem;
+	// border: 1px solid black;
+}
+
+.main-container > .menu-container > ul > li > a{
+	text-decoration: none;
+	border: 1px solid black;
+	padding: .2rem;
+	color:black;
+}
+
+.hide-bunvenit-container{
+	display: none;
+}
+
+.hide-logoutBtn-container{
+	display: none;
+}
+
