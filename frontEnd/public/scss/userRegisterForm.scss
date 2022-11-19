@@ -4,7 +4,7 @@ margin: auto;
 top:50%;
 right: 50%;
 }
-form{
+.form{
 	display: block;
 	margin: auto;
   width: 35rem;
@@ -19,9 +19,9 @@ h1{
 	padding: 2rem;
 }
 
-.main-container{
-	padding-top: 1rem;
-}
+// .main-container{
+// 	padding-top: 1rem;
+// }
 .group{
 margin: auto;
 width: 75%;
@@ -75,4 +75,46 @@ font-size: medium;
 }
 .hide-register-form{
 	display: none;
+}
+
+
+//Container form register/auth
+
+.container-outer-form{
+margin: auto;
+position:absolute;
+top: 30%;
+left: 45%;
+
+}
+
+.container-auth-form{
+	border: 1px solid black;
+	margin: auto;
+	width: 400px;
+	text-align: center;
+	padding: .5rem;
+width: 20rem;
+height: 10rem;
+}
+
+.container-register, .container-login{
+	display: inline-block;
+	position: relative;
+	margin: auto;
+	width: 45%;
+	top: 45%;
+}
+
+.btn-register{
+	color: #000;
+	padding: .5rem;
+	background: transparent;
+	cursor: pointer;
+}
+.btn-login{
+	color: #000;
+	cursor: pointer;
+	padding: .5rem;
+	background: transparent;
 }

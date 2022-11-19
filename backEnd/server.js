@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const logger = require('./middleware/logger/logger');
 const errorHandler = require('./middleware/error/error');
 const connectDB = require('./config/db');
+const session = require('express-session');
+const mongoDBStore = require('connect-mongodb-session')(session);
 
 //Load env vars
 dotenv.config({ path: './config/configs.env' });

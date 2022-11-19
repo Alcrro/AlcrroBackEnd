@@ -13,11 +13,48 @@ body{
 	// border: 1px solid black;
 }
 
+.main-container-auth{
+margin: 0;
+position: absolute;
+top: 30%;
+left: 40%;
+}
+
+.menu-container{
+	display: block;
+	margin: auto;
+	text-align: center;
+	border: 1px solid black;
+	width: 30rem;
+	height: 20rem;
+	padding: .2rem;
+}
+.ul-container{
+	padding: .2rem;
+	position: relative;
+	margin: auto;
+	top: 45%;
+}
+
+.a-container-register{
+	padding: .2rem;
+}
+
+.li-container-register{
+	display: inline-block;
+	width: 200px;
+}
+.li-container-login{
+	display: inline-block;
+	width: 200px;
+}
+
 .main-container > .menu-container > ul > li > a{
 	text-decoration: none;
 	border: 1px solid black;
 	padding: .2rem;
 	color:black;
+
 }
 
 .hide-bunvenit-container{
@@ -28,3 +65,9 @@ body{
 	display: none;
 }
 
+// .hide-main-container-auth{
+// 	display: none;
+// }
+// .menu-container{
+// 	display: ;
+// }

@@ -7,6 +7,8 @@ const registerErrorNameValue = document.querySelector(
 );
 const registerSuccessValue = document.querySelector('.registerSuccess');
 const registerSubmit = document.querySelector('.btn-register');
+const message = document.querySelector('.message');
+const loginMessage = document.querySelector('.login-message');
 
 const registerForm = async (e) => {
   e.preventDefault();
@@ -21,17 +23,40 @@ const registerForm = async (e) => {
       }),
     });
     const data = await res.json();
-    if (registerNameValue.value === '') {
-      registerErrorNameValue.classList.remove('hide');
-      return;
+    const dataResult = data;
+    console.log(dataResult);
+    function emptyFields() {
+      const data = `<p class="message-group registerError">${dataResult.message}</p>`;
+
+      message.innerHTML = data;
     }
-    if (data.name === registerErrorNameValue.value) {
-      registerErrorValue.classList.remove('hide');
-      console.log('Acest nume exista');
+    function duplicateFields() {
+      const data = `<p class="message-group registerErrorEmptyName">${dataResult.message}</p>`;
+      message.innerHTML = data;
+    }
+    function registerSuccess() {
+      const data = `<p class="message-group registerSuccess">${dataResult.message}</p>`;
+      message.innerHTML = data;
+    }
+
+    console.log(dataResult);
+    if (registerNameValue.value === '') {
+      emptyFields();
+      setTimeout(() => {
+        hideText();
+      }, 3000);
+      return;
+    } else if (dataResult.message == 'Duplicate field value entered') {
+      duplicateFields();
+      setTimeout(() => {
+        hideText();
+      }, 3000);
+      return;
     } else {
-      registerErrorValue.classList.add('hide');
-      registerErrorNameValue.classList.add('hide');
-      registerSuccessValue.classList.remove('hide');
+      registerSuccess();
+      setTimeout(() => {
+        hideText();
+      }, 3000);
     }
 
     console.log(data.message);
@@ -63,19 +88,37 @@ const loginForm = async (e) => {
         password: loginPasswordValue.value,
       }),
     });
+
     const data = await res.json();
     const dataR = data;
-    console.log(dataR.data.name);
-    liBunVenit.classList.remove('hide-bunvenit-container');
-    logOutBtnA.classList.remove('hide-logoutBtn-container');
-    const username = `<a href="">Bun Venit: ${dataR.data.name}</a>`;
+    function invalidCredentials() {
+      const data = `<p class="message-group registerErrorEmptyName">${dataR.message}</p>`;
+      loginMessage.innerHTML = data;
+    }
+    function hideText() {
+      loginMessage.textContent = '';
+      loginMessage.style.color = 'red';
+    }
 
-    liBunVenit.innerHTML = username;
-    loginFormContainer.classList.add('hide-login-form');
-    registerBtnA.style.display = 'none';
-    loginBtnA.style.display = 'none';
-  } catch (error) {
-    console.log(error);
+    if (dataR.message === 'Invalid credentials') {
+      console.log(dataR.message);
+      invalidCredentials();
+      setTimeout(() => {
+        hideText();
+      }, 3000);
+      return;
+    } else {
+      liBunVenit.classList.remove('hide-bunvenit-container');
+      logOutBtnA.classList.remove('hide-logoutBtn-container');
+      const username = `<a href="#">Bun Venit: ${dataR.data.name}</a>`;
+
+      liBunVenit.innerHTML = username;
+      loginFormContainer.classList.add('hide-login-form');
+      registerBtnA.style.display = 'none';
+      loginBtnA.style.display = 'none';
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
