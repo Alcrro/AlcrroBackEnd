@@ -7,9 +7,17 @@ const loginSessionSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  checkbox: {
+    type: Boolean,
+    default: true,
+  },
   loginAt: {
     type: Date,
     default: Date.now,
+  },
+  expireAt: {
+    type: Date,
+    default: new Date(+new Date() + 86400000),
   },
 });
 

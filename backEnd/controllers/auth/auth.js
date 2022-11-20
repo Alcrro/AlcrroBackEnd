@@ -37,12 +37,10 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 //@access 			Public
 exports.loginUser = asyncHandler(async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, checkbox } = req.body;
     // Validate email and password
     if (!email || !password) {
-      return next(
-        new ErrorResponse('Please provide an email and password', 400)
-      );
+      return next(new ErrorResponse('Please provide an email and password', 400));
     }
     //Check for user
     const user = await User.findOne({ email: email }).select('+password');
@@ -57,37 +55,30 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Invalid credentials', 401));
     }
 
-    // const store = new mongoDBStore({
-    //   uri: process.env.MONGO_URI,
-    //   collection: 'loginSessions',
-    // });
+    //Check if checkbox is true
+    if (!checkbox) {
+      return next(new ErrorResponse('Login Checkbox need to be true', 401));
+    }
 
-    // session({
-    //   secret: 'my secret',
-    //   resave: false,
-    //   saveUninitialized: false,
-    //   store: store,
-    //   cookie: { maxAge: 1000 },
-    //   email,
-    // });
-    const findName = await User.findOne({ email: email }).select('name');
-    const userSession = await LoginSession.create({
-      name: findName.name,
-      email,
-    });
+    const findName = await User.findOne({ email: email }).select('+name');
+    const findLoginSessionName = await LoginSession.findOne({ email: email }).select('+name');
 
-    session({
-      cookie: {
-        maxAge: 1000,
-      },
-    });
-
-    res.status(200).json({
-      success: true,
-      message: 'Te-ai logat cu success',
-      data: user,
-      userSession: userSession,
-    });
+    //Check if is already logged in
+    if (findLoginSessionName) {
+      return next(new ErrorResponse('You are already loggedIn', 401));
+    } else {
+      const loginSession = await LoginSession.create({
+        name: findName.name,
+        email,
+        password,
+      });
+      res.status(200).json({
+        success: true,
+        message: 'Te-ai logat cu success',
+        data: user,
+        loginSession: loginSession,
+      });
+    }
   } catch (err) {
     next(err);
   }

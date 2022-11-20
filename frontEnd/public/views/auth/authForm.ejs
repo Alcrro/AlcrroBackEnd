@@ -1,27 +1,36 @@
-<div class="form-container-login hide-login-form">
-  <form action="" method="post" class="form">
-    <h1>Login Form</h1>
-    <div class="form-container">
-      <div class="group">
-        <label for="email" class="label">Email:</label>
-        <input
-          type="email"
-          name="email"
-          class="inputRegisterForm email"
-          autocomplete="off"
-        />
-      </div>
-
-      <div class="group">
-        <label for="password" name="password" class="label">Password:</label>
-        <input
-          type="password"
-          class="inputRegisterForm password"
-          autocomplete="off"
-        />
-      </div>
-      <div class="login-message"></div>
+<div
+  class="container-sm a-container-login"
+  style="width: 400px; border: 1px solid black; padding: 1rem"
+>
+  <h1 class="text-center">Login Form</h1>
+  <form class="form-control-sm form-container-login">
+    <div class="mb-1">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input
+        name="email"
+        type="email"
+        class="form-control email"
+        id="exampleInputEmail1"
+        aria-describedby="emailHelp"
+      />
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
-    <button type="submit" class="btn btn-login">Login</button>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input
+        type="password"
+        name="password"
+        class="form-control password"
+        id="exampleInputPassword1"
+      />
+    </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" name="checkbox" class="form-check-input" id="exampleCheck1" />
+      <label class="form-check-label" name="checkbox-label" for="exampleCheck1"
+        >Bifeaza daca nu esti robot</label
+      >
+    </div>
+    <div class="login-message"></div>
+    <button type="submit" class="btn btn-primary btn-login">Submit</button>
   </form>
 </div>
