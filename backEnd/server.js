@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const logger = require('./middleware/logger/logger');
+const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error/error');
 const connectDB = require('./config/db');
 const session = require('express-session');
@@ -22,6 +23,7 @@ const group = require('./routes/group/group');
 const server = express();
 server.use(express.json());
 server.use(cors());
+server.use(cookieParser());
 
 const PORT = process.env.DB_SERVER_PORT;
 
@@ -40,4 +42,4 @@ server.use('/api/user', user);
 server.use('/api/group', group);
 server.use(errorHandler);
 
-server.listen(PORT, console.log(`Server running in ${PORT}`));
+server.listen(PORT, console.log(`Server running ${process.env.NODE_ENV} mode on port ${PORT}`));

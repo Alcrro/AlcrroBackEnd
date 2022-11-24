@@ -21,11 +21,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
         email,
         password,
       });
-      res.status(200).json({
-        success: true,
-        message: 'Te-ai inrgistrat cu success',
-        data: user,
-      });
+      sendTokenResponse(user, 200, res);
     }
   } catch (err) {
     next(err);
@@ -60,26 +56,35 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Login Checkbox need to be true', 401));
     }
 
-    const findName = await User.findOne({ email: email }).select('+name');
-    const findLoginSessionName = await LoginSession.findOne({ email: email }).select('+name');
-
-    //Check if is already logged in
-    if (findLoginSessionName) {
-      return next(new ErrorResponse('You are already loggedIn', 401));
-    } else {
-      const loginSession = await LoginSession.create({
-        name: findName.name,
-        email,
-        password,
-      });
-      res.status(200).json({
-        success: true,
-        message: 'Te-ai logat cu success',
-        data: user,
-        loginSession: loginSession,
-      });
-    }
+    sendTokenResponse(user, 200, res);
   } catch (err) {
     next(err);
   }
+});
+
+//Get token  from model, create cookie and send response
+const sendTokenResponse = (user, statusCode, res) => {
+  //Create token
+  const token = user.getSignedJwtToken();
+
+  const options = {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true;
+  }
+
+  res.status(statusCode).cookie('token', token, options).json({
+    success: true,
+    token,
+  });
+};
+
+exports.logoutUser = asyncHandler(async (req, res, next) => {
+  //add value
+  const { name } = req.body;
+
+  const alreadyLoggedIn = LoginSession.findById({ name: name });
 });

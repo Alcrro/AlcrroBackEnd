@@ -2,6 +2,8 @@ const express = require('express');
 const { getIndex } = require('../../controllers/index/index');
 const router = express.Router();
 
-router.route('/').get(getIndex);
+const { protect } = require('../../middleware/auth/auth');
+
+router.route('/').get(protect, getIndex);
 
 module.exports = router;

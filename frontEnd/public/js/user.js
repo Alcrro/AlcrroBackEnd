@@ -121,10 +121,13 @@ const test = async (e) => {
 
       localStorage.setItem('dataSession', JSON.stringify(dataR.loginSession));
 
-      const containerBunVenitEl = document.querySelector('.li-container-bunvenit');
-      const data = `<a class="nav-link" href="#">Bun Venit!: ${dataR.data.name}</a>`;
+      const aBunVenitEl = document.querySelector('.js-nav-link-bv');
+      aBunVenitEl.classList.remove('d-none');
+      const containerBunVenitSpanEl = document.querySelector('.span-username');
+      const data = `${dataR.data.name}`;
 
-      containerBunVenitEl.innerHTML = data;
+      containerBunVenitSpanEl.innerHTML = data;
+      console.log(document.querySelector('.span-username').textContent);
     }
   } catch (error) {
     console.log(error);
@@ -132,3 +135,34 @@ const test = async (e) => {
 };
 
 formContainer.addEventListener('submit', test);
+
+const logoutBtn = document.querySelector('.js-nav-link-logout');
+
+const logout = async (e) => {
+  e.preventDefault();
+  try {
+    const formData = new FormData(formContainer);
+    const data = Object.fromEntries(formData);
+
+    const res = await fetch('http://localhost:5000/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const dataResultSessions = await res.json();
+    console.log(dataResultSessions);
+    console.log(dataResultSessions.data.name);
+    console.log('mere boss');
+    const spanUsername = document.querySelector('.span-username');
+    console.log(spanUsername.textContent);
+    if (spanUsername.textContent === dataResultSessions.data.name) {
+      console.log('este');
+    } else {
+      console.log('nu este');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+logoutBtn.addEventListener('click', logout);
