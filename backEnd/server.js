@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 const logger = require('./middleware/logger/logger');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error/error');
@@ -24,6 +25,11 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 server.use(cookieParser());
+
+//Dev logging middleware
+if (process.env.NODE_ENV === 'development') {
+  server.use(morgan('dev'));
+}
 
 const PORT = process.env.DB_SERVER_PORT;
 
