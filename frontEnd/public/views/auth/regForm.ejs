@@ -4,22 +4,22 @@
 <!-- <br> -->
  <%- include('../content/menu/menu.ejs') %>
 <div
-  class="container-sm a-container-register d-none"
+  class="container-sm a-container-register "
   style="width: 400px; border: 1px solid black; padding: 1rem"
 >
   <h1 class="text-center">Register Form</h1>
   <form class="form-container-register">
     <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input type="name" class="form-control registerName" id="name" aria-describedby="name" />
+      <label for="name"  class="form-label">Name</label>
+      <input type="name" name="name" class="form-control registerName" id="name" aria-describedby="name" />
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control registerEmail" id="email" aria-describedby="email" />
+      <input type="email" name="email" class="form-control registerEmail" id="email" aria-describedby="email" />
     </div>
     <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password " class="form-control registerPassword" id="exampleInputPassword1" />
+      <label for="password" class="form-label">Password</label>
+      <input type="password " name="password" class="form-control registerPassword" id="exampleInputPassword1" />
     </div>
     <!-- <div class="mb-3 form-check">
       <input type="checkbox" class="form-check-input" id="exampleCheck1" />
@@ -28,7 +28,5 @@
     </div> -->
     <button type="submit" class="btn btn-primary btn-register">Submit</button>
   </form>
-</>
-<br />
+</div>
 </body>
-<%- include('../includes/end.ejs') %>

@@ -22,6 +22,25 @@ const logInUser = async (e) => {
 
     sessionStorage.setItem('token', JSON.stringify(dataObject.token));
 
+    //Check if is logged in
+    if (dataObject.token.isLoggedIn === true) {
+      const aBunVenitEl = document.querySelector('.js-nav-link-bv');
+      const registerLink = document.querySelector('.js-nav-link-register');
+      const loginLink = document.querySelector('.js-nav-link-logout');
+      registerLink.classList.add('d-none');
+      loginLink.classList.add('d-none');
+      aBunVenitEl.classList.remove('d-none');
+      const containerBunVenitSpanEl = document.querySelector('.span-username');
+      const data = `${dataArray.name}`;
+      console.log(data);
+
+      containerBunVenitSpanEl.innerHTML = data;
+      console.log(document.querySelector('.span-username').textContent);
+      location.href;
+    } else {
+      console.log('Trebe sa te loghezi');
+    }
+
     function invalidCredentials() {
       const data = `<p class="message-group registerErrorEmptyName">${dataObject.message}</p>`;
 
@@ -51,20 +70,19 @@ const logInUser = async (e) => {
         hideText();
       }, 3000);
       checkboxEl.checked = false;
+      const aBunVenitEl = document.querySelector('.js-nav-link-bv');
+      const registerLink = document.querySelector('.js-nav-link-register');
+      const loginLink = document.querySelector('.js-nav-link-logout');
+      registerLink.classList.add('d-none');
+      loginLink.classList.add('d-none');
+      aBunVenitEl.classList.remove('d-none');
+      const containerBunVenitSpanEl = document.querySelector('.span-username');
+      const data = `${dataArray.name}`;
+      console.log(data);
 
-      //Check if is logged in
-      if (dataObject.token.isLoggedIn === true) {
-        const aBunVenitEl = document.querySelector('.js-nav-link-bv');
-        aBunVenitEl.classList.remove('d-none');
-        const containerBunVenitSpanEl = document.querySelector('.span-username');
-        const data = `${dataArray.name}`;
-        console.log(data);
-
-        containerBunVenitSpanEl.innerHTML = data;
-        console.log(document.querySelector('.span-username').textContent);
-      } else {
-        console.log('Trebe sa te loghezi');
-      }
+      containerBunVenitSpanEl.innerHTML = data;
+      console.log(document.querySelector('.span-username').textContent);
+      location.href;
     }
   } catch (error) {
     console.log(error);
