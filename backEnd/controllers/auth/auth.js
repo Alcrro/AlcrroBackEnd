@@ -1,7 +1,7 @@
 const ErrorResponse = require('../../utilis/errorResponse');
 const asyncHandler = require('../../middleware/async/async');
-const User = require('../../models/user/Users');
-const LoginSession = require('../../models/user/LoginSesion');
+const UserRegister = require('../../models/auth/userRegister');
+const UserLogin = require('../../models/auth/userLogin');
 const session = require('express-session');
 const mongoDBStore = require('connect-mongodb-session')(session);
 
@@ -10,13 +10,16 @@ const mongoDBStore = require('connect-mongodb-session')(session);
 //@access 			Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
-  console.log(req.body.email);
   try {
-    //Check if fields are empty
-    if (name === '' || email === '' || password === '') {
+    //Check if data exist
+    const dataExist = await UserRegister.findOne({ email: email });
+    if (dataExist) {
+      return next(new ErrorResponse('email already exist!', 404));
+    } else if (name === '' || email === '' || password === '') {
+      //Check if fields are empty
       return next(new ErrorResponse('Please complete the fields', 404));
     } else {
-      const user = await User.create({
+      const user = await UserRegister.create({
         name,
         email,
         password,
@@ -39,7 +42,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Please provide an email and password', 400));
     }
     //Check for user
-    const user = await User.findOne({ email: email }).select('+password');
+    const user = await UserRegister.findOne({ email: email }).select('+password');
     if (!user) {
       return next(new ErrorResponse('Invalid credentials', 401));
     }
@@ -63,13 +66,15 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 });
 
 //Get token  from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = async (user, statusCode, res) => {
   //Create token
   const token = user.getSignedJwtToken();
 
   const options = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 60000),
     httpOnly: true,
+    isLoggedIn: true,
+    token: token,
   };
 
   if (process.env.NODE_ENV === 'production') {
@@ -78,13 +83,14 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res.status(statusCode).cookie('token', token, options).json({
     success: true,
-    token,
+    data: user,
+    token: options,
   });
 };
 
 exports.logoutUser = asyncHandler(async (req, res, next) => {
-  //add value
-  const { name } = req.body;
-
-  const alreadyLoggedIn = LoginSession.findById({ name: name });
+  req.session.destroy((err) => {
+    if (err) throw err;
+    res.redirect('/');
+  });
 });

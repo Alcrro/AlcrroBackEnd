@@ -22,8 +22,12 @@ const auth = require('./routes/auth/auth');
 const group = require('./routes/group/group');
 
 const server = express();
+
+//Body parser
 server.use(express.json());
 server.use(cors());
+
+//Cookie parser
 server.use(cookieParser());
 
 //Dev logging middleware
@@ -44,7 +48,7 @@ server.use('/', async (req, res, next) => {
 server.use(logger);
 server.use('/api/auth', auth);
 server.use('/', index);
-server.use('/api/user', user);
+server.use('/api/users', user);
 server.use('/api/group', group);
 server.use(errorHandler);
 

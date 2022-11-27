@@ -11,8 +11,8 @@ const router = express.Router();
 const { protect } = require('../../middleware/auth/auth');
 
 router.route('/register').post(registerUser);
-router.route('/login').post(protect, loginUser);
-// router.route('/session').post(authSessions);
+router.route('/login').post(loginUser);
+// // router.route('/session').post(authSessions);
 router.route('/logout').post(logoutUser);
 
 module.exports = router;
