@@ -80,6 +80,7 @@ config/
 
 # dotenv environment variables file
 .env
+.gitignore
 
 # next.js build output
 .next
