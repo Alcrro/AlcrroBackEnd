@@ -18,12 +18,9 @@ const logInUser = async (e) => {
     const dataObject = await res.json();
     const dataArray = dataObject.data;
     console.log(dataObject);
-    console.log(dataObject.token.isLoggedIn);
-
-    sessionStorage.setItem('token', JSON.stringify(dataObject.token));
 
     //Check if is logged in
-    if (dataObject.token.isLoggedIn === true) {
+    if (dataObject.cookies.expires < Date.now()) {
       const aBunVenitEl = document.querySelector('.js-nav-link-bv');
       const registerLink = document.querySelector('.js-nav-link-register');
       const loginLink = document.querySelector('.js-nav-link-logout');
@@ -32,11 +29,8 @@ const logInUser = async (e) => {
       aBunVenitEl.classList.remove('d-none');
       const containerBunVenitSpanEl = document.querySelector('.span-username');
       const data = `${dataArray.name}`;
-      console.log(data);
 
       containerBunVenitSpanEl.innerHTML = data;
-      console.log(document.querySelector('.span-username').textContent);
-      location.href;
     } else {
       console.log('Trebe sa te loghezi');
     }
@@ -78,11 +72,11 @@ const logInUser = async (e) => {
       aBunVenitEl.classList.remove('d-none');
       const containerBunVenitSpanEl = document.querySelector('.span-username');
       const data = `${dataArray.name}`;
-      console.log(data);
 
       containerBunVenitSpanEl.innerHTML = data;
-      console.log(document.querySelector('.span-username').textContent);
       location.href;
+
+      const setToken = sessionStorage.setItem('token', JSON.stringify(dataObject.cookies.token));
     }
   } catch (error) {
     console.log(error);
@@ -90,3 +84,20 @@ const logInUser = async (e) => {
 };
 
 formContainer.addEventListener('submit', logInUser);
+
+const getToken = sessionStorage.getItem('token');
+const valueToken = JSON.parse(getToken);
+
+function parseJwt(valueToken) {
+  const base64Url = valueToken.split('.')[1];
+  let base64 = decodeURIComponent(
+    atob(base64Url)
+      .split('')
+      .map((c) => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+  return JSON.parse(base64);
+}
+parseJwt(valueToken);

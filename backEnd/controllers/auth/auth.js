@@ -19,12 +19,19 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       //Check if fields are empty
       return next(new ErrorResponse('Please complete the fields', 404));
     } else {
-      const user = await UserRegister.create({
+      const userLogins = await UserRegister.create({
         name,
         email,
         password,
       });
-      sendTokenResponse(user, 200, res);
+      //Create token
+      const token = userLogins.getSignedJwtToken();
+      res.status(200).json({
+        success: true,
+        message: 'Te-ai inregistrat cu success!',
+        data: userLogins,
+        token: token,
+      });
     }
   } catch (err) {
     next(err);
@@ -81,10 +88,11 @@ const sendTokenResponse = async (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res.status(statusCode).cookie('token', token, options).json({
+  res.status(statusCode).cookie('token', token, options, user).json({
     success: true,
+    message: 'Te-ai logat cu success!',
+    cookies: options,
     data: user,
-    token: options,
   });
 };
 

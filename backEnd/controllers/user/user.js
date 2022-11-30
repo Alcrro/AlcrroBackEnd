@@ -1,6 +1,6 @@
 const ErrorResponse = require('../../utilis/errorResponse');
 const asyncHandler = require('../../middleware/async/async');
-const User = require('../../models/user/Users');
+const UserRegister = require('../../models/auth/userRegister');
 const Users = require('../../models/user/Users');
 
 //@desc					Get all user
@@ -8,7 +8,7 @@ const Users = require('../../models/user/Users');
 //@access 			Public
 
 exports.getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.find();
+  const user = await UserRegister.find();
   res.status(200).json({ success: true, TotalUsers: user.length, data: user });
 });
 
@@ -16,11 +16,9 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 //@route 				GET
 //@access 			Public
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await UserRegister.findById(req.params.id);
   if (!user) {
-    return next(
-      new ErrorResponse(`User not found with id of ${req.params.id}`, 404)
-    );
+    return next(new ErrorResponse(`User not found with id of ${req.params.id}`, 404));
   }
   res.status(200).json({ success: true, data: user });
 });
@@ -29,7 +27,7 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 //@route 				PUT
 //@access 			Public
 exports.UpdateUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const user = await UserRegister.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -48,7 +46,7 @@ exports.UpdateUser = asyncHandler(async (req, res, next) => {
 //@route 				DELETE
 //@access 			Public
 exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndDelete(req.params.id);
+  const user = await UserRegister.findByIdAndDelete(req.params.id);
   if (!user) {
     return res.status(400).json({
       success: false,
@@ -65,7 +63,7 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 //@route 				DELETE
 //@access 			Public
 exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
-  const user = await User.deleteMany({});
+  const user = await UserRegister.deleteMany({});
   if (!user) {
     return res.status(400).json({
       success: false,

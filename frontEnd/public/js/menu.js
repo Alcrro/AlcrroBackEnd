@@ -1,16 +1,13 @@
-const registerBtn = document.querySelector('.a-container-register');
-const registerContainer = document.querySelector('.form-container-register');
-const mainContainer = document.querySelector('.main-container');
-
-const loginBtn = document.querySelector('.a-container-login');
-const loginContainer = document.querySelector('.form-container-login');
-
-registerBtn.addEventListener('click', function () {
-  loginContainer.classList.add('hide-login-form');
-  loginContainer.classList.add('hide-main-container-auth');
-  registerContainer.classList.toggle('hide-register-form');
-});
-loginBtn.addEventListener('click', function () {
-  registerContainer.classList.add('hide-register-form');
-  loginContainer.classList.toggle('hide-login-form');
-});
+const alreadyloggedIn = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const results = await res.json();
+    console.log(results);
+  } catch (error) {}
+};
+formContainer.addEventListener('DOMContentLoaded', logInUser);
