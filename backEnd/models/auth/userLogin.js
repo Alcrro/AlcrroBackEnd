@@ -36,6 +36,16 @@ const userLoginSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+const username = { name: this.email };
+console.log(username);
+
+//Sign JWT and return
+userLoginSchema.methods.getSignedJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    algorithm: 'HS256',
+    username: username,
+  });
+};
 
 //Match  user entered password to hashed password in database
 userLoginSchema.methods.matchPassword = async function (enteredPassword) {

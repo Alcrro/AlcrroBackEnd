@@ -20,7 +20,7 @@ const userRegisterSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'publisher'],
     default: 'user',
-    select: false,
+    required: true,
   },
   password: {
     type: String,

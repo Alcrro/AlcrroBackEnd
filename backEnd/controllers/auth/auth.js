@@ -11,7 +11,7 @@ const userRegister = require('../../models/auth/userRegister');
 //@route 				POST
 //@access 			Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   try {
     //Check if data exist
     const dataExist = await UserRegister.findOne({ email: email });
@@ -25,6 +25,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
         name,
         email,
         password,
+        role,
       });
       //Create token
       const token = userLogins.getSignedJwtToken();
