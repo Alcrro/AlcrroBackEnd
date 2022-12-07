@@ -86,23 +86,22 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 const sendTokenResponse = async (user, statusCode, res) => {
   //Create token
   const token = user.getSignedJwtToken();
-  const idN = await userRegister.findOne(user);
+  // const idN = await userRegister.findOne(user);
 
-  const accessToken = jwt.sign(
-    {
-      id: idN._id,
-      name: idN.name,
-      email: idN.email,
-      loggedIn: new Date(),
-      expires: new Date(Date.now() + 86400000),
-    },
-    process.env.JWT_SECRET
-  );
+  // const accessToken = jwt.sign(
+  //   {
+  //     id: idN._id,
+  //     name: idN.name,
+  //     email: idN.email,
+  //     loggedIn: new Date(),
+  //     expires: new Date(Date.now() + 86400000),
+  //   },
+  //   process.env.JWT_SECRET
+  // );
   const options = {
     httpOnly: true,
     isLoggedIn: true,
     token: token,
-    id: user.id,
   };
 
   if (process.env.NODE_ENV === 'production') {
@@ -123,6 +122,7 @@ const sendTokenResponse = async (user, statusCode, res) => {
 
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await userRegister.findById(req.user.id);
+
   res.status(200).json({
     success: true,
     data: user,
