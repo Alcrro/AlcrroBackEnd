@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -24,6 +25,8 @@ const group = require('./backEnd/routes/group/group');
 const server = express();
 
 //Body parser
+server.use(bodyParser.json());
+server.use(cookieParser());
 server.use(express.json());
 server.use(cors());
 

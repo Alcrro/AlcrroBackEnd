@@ -37,9 +37,12 @@ const userLoginSchema = new mongoose.Schema({
   },
 });
 
+// const username = { name: this.email };
+
 //Sign JWT and return
 userLoginSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    algorithm: 'HS256',
     expiresIn: process.env.JWT_EXPIRE,
   });
 };

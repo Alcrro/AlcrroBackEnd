@@ -31,4 +31,4 @@ app.get('/login', (req, res, next) => {
   });
 });
 
-app.listen(3000);
+app.listen(3000, () => console.log(`Server running ${process.env.NODE_ENV} mode on port 3000`));

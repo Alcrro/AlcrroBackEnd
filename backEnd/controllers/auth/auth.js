@@ -4,6 +4,8 @@ const UserRegister = require('../../models/auth/userRegister');
 const UserLogin = require('../../models/auth/userLogin');
 const session = require('express-session');
 const mongoDBStore = require('connect-mongodb-session')(session);
+const jwt = require('jsonwebtoken');
+const userRegister = require('../../models/auth/userRegister');
 
 //@desc					Register user
 //@route 				POST
@@ -66,6 +68,14 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Login Checkbox need to be true', 401));
     }
 
+    // const idN = await userRegister.findOne({ email: email });
+
+    // const accessToken = jwt.sign({ idN }, process.env.JWT_SECRET);
+    // res.status(200).json({
+    //   accessToken: accessToken,
+    //   idN: idN,
+    // });
+
     sendTokenResponse(user, 200, res);
   } catch (err) {
     next(err);
@@ -76,12 +86,23 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 const sendTokenResponse = async (user, statusCode, res) => {
   //Create token
   const token = user.getSignedJwtToken();
+  const idN = await userRegister.findOne(user);
 
+  const accessToken = jwt.sign(
+    {
+      id: idN._id,
+      name: idN.name,
+      email: idN.email,
+      loggedIn: new Date(),
+      expires: new Date(Date.now() + 86400000),
+    },
+    process.env.JWT_SECRET
+  );
   const options = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 60000),
     httpOnly: true,
     isLoggedIn: true,
     token: token,
+    id: user.id,
   };
 
   if (process.env.NODE_ENV === 'production') {
@@ -92,9 +113,21 @@ const sendTokenResponse = async (user, statusCode, res) => {
     success: true,
     message: 'Te-ai logat cu success!',
     cookies: options,
-    data: user,
+    token: token,
   });
 };
+
+//@desc					Get current logged in user
+//@route 				POST /api/auth/me
+//@access 			Private
+
+exports.getMe = asyncHandler(async (req, res, next) => {
+  const user = await userRegister.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
 
 exports.logoutUser = asyncHandler(async (req, res, next) => {
   req.session.destroy((err) => {
