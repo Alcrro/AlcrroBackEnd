@@ -14,20 +14,21 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
   try {
     //Check if data exist
-    const dataExist = await UserRegister.findOne({ email: email });
-    if (dataExist) {
+    const user = await UserRegister.findOne({ email: email });
+    if (user) {
       return next(new ErrorResponse('email already exist!', 404));
     } else if (name === '' || email === '' || password === '') {
       //Check if fields are empty
       return next(new ErrorResponse('Please complete the fields', 404));
     } else {
-      const userLogins = await UserRegister.create({
+      const user = await UserRegister.create({
         name,
         email,
         password,
         role,
       });
-      //Create token
+      // sendTokenResponse(user, 200, res);
+      // Create token
       const token = userLogins.getSignedJwtToken();
       res.status(200).json({
         success: true,
@@ -114,6 +115,7 @@ const sendTokenResponse = async (user, statusCode, res) => {
     message: 'Te-ai logat cu success!',
     cookies: options,
     token: token,
+    data: user,
   });
 };
 

@@ -20,7 +20,7 @@ const userRegisterSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'publisher'],
     default: 'user',
-    required: true,
+    required: false,
   },
   password: {
     type: String,
@@ -47,9 +47,7 @@ userRegisterSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     { id: this._id, name: this.name, email: this.email, role: this.role },
     process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRE,
-    }
+    {}
   );
 };
 
