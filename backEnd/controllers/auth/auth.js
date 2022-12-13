@@ -29,11 +29,11 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       });
       // sendTokenResponse(user, 200, res);
       // Create token
-      const token = userLogins.getSignedJwtToken();
+      const token = UserRegister.getSignedJwtToken();
       res.status(200).json({
         success: true,
         message: 'Te-ai inregistrat cu success!',
-        data: userLogins,
+        data: user,
         token: token,
       });
     }
@@ -70,14 +70,6 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Login Checkbox need to be true', 401));
     }
 
-    // const idN = await userRegister.findOne({ email: email });
-
-    // const accessToken = jwt.sign({ idN }, process.env.JWT_SECRET);
-    // res.status(200).json({
-    //   accessToken: accessToken,
-    //   idN: idN,
-    // });
-
     sendTokenResponse(user, 200, res);
   } catch (err) {
     next(err);
@@ -88,22 +80,15 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 const sendTokenResponse = async (user, statusCode, res) => {
   //Create token
   const token = user.getSignedJwtToken();
-  // const idN = await userRegister.findOne(user);
+  const today = new Date();
+  const expireIn = today.setDate(today.getDate() + 1);
 
-  // const accessToken = jwt.sign(
-  //   {
-  //     id: idN._id,
-  //     name: idN.name,
-  //     email: idN.email,
-  //     loggedIn: new Date(),
-  //     expires: new Date(Date.now() + 86400000),
-  //   },
-  //   process.env.JWT_SECRET
-  // );
   const options = {
     httpOnly: true,
     isLoggedIn: true,
     token: token,
+    loggedIn: new Date(),
+    expireIn: new Date(expireIn),
   };
 
   if (process.env.NODE_ENV === 'production') {

@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./backEnd/middleware/error/error');
 const connectDB = require('./backEnd/config/db');
 const session = require('express-session');
-const mongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 //Load env vars
 dotenv.config({ path: './backend/config/configs.env' });
@@ -23,6 +23,9 @@ const auth = require('./backEnd/routes/auth/auth');
 const group = require('./backEnd/routes/group/group');
 
 const server = express();
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+});
 
 //Body parser
 server.use(bodyParser.json());

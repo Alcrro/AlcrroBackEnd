@@ -45,9 +45,16 @@ userRegisterSchema.pre('save', async function (next) {
 //Sign JWT and return
 userRegisterSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
-    { id: this._id, name: this.name, email: this.email, role: this.role },
+    {
+      id: this._id,
+      name: this.name,
+      email: this.email,
+      role: this.role,
+    },
     process.env.JWT_SECRET,
-    {}
+    {
+      expiresIn: process.env.JWT_COOKIE_EXPIRE + 8640000000,
+    }
   );
 };
 
