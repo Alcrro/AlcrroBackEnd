@@ -1,13 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
+import {FaTimes} from 'react-icons/fa'
+import PropTypes  from 'prop-types'
+// import { useState } from 'react';
+import Card from './shared/Card';
 
-function FeedbackItem() {
-	//how to use local useState 
-	const [rating, setRating] = useState(11);
-	const [text, setText] = useState('Example from useState');
+function FeedbackItem({item, handleDelete}) {
+	///how to use local useState 
+	// const [rating, setRating] = useState(11);
+	// const [text, setText] = useState('Example from useState');
 
 	//change useState
-	const handleClick = () =>{
+	//const handleClick = () =>{
 		// setRating(69)
 		///Access previous rating and change it to 69 
 		// setRating(() =>{
@@ -19,17 +21,28 @@ function FeedbackItem() {
 		// 	console.log(prev);
 		// 	return prev + 1
 		// })
+	//}
+	const handleClick = (id) =>{
+		console.log(id);
 	}
 
 	return (
-		<div  className='card'>
-			<div className="num-display">{rating}</div>
+		<Card  >
+			<div className="num-display">{item.rating}</div>
+			<button onClick={() => handleDelete(item.id)} className='close'>
+				<FaTimes />
+			</button>
 			<div className="text-display">
-				{text}
+				{item.text}
 			</div>
-			<button onClick={handleClick}>Click</button>
-		</div>
+			{/* <button onClick={handleClick}>Click</button> */}
+		</Card>
 	)
 }
+
+FeedbackItem.prototype ={
+	item: PropTypes.object.isRequired
+}
+
 
 export default FeedbackItem
