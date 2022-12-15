@@ -19,6 +19,7 @@ Header.defaultProps = {
 	textColor: '#ff6a95'
 }
 
+//
 Header.propTypes = {
 	text: PropTypes.string.isRequired,
 	bgColor: PropTypes.string,
